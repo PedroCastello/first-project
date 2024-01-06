@@ -1,8 +1,11 @@
 const express = require("express");
 const uuid = require("uuid");
-const port = 3004;
+const port = 3002;
 const app = express();
+const cors = require('cors')
 app.use(express.json());
+app.use(cors())
+
 
 // - query params => meusite.com/users?name=rodolfo&age=28   // filtrar
 /*
@@ -81,14 +84,22 @@ app.get("/users", (request, response) => {
   return response.json(users);
 });
 
+//TRY / CATCH
+
 app.post("/users", (request, response) => {
-  const { name, age } = request.body;
+  try {
+    const { name, age } = request.body;
+    if (age < 18) throw new Error("Only allower users over 18 years old");
+    const user = { id: uuid.v4(), name, age };
 
-  const user = { id: uuid.v4(), name, age };
+    users.push(user);
 
-  users.push(user);
-
-  return response.status(201).json(users);
+    return response.status(201).json(users);
+  } catch (err) {
+    return response.status(400).json({ Error: err.message });
+  } finally {
+    console.log('terminou tudo')
+  }
 });
 
 app.put("/users/:id", checkUserId, (request, response) => {
