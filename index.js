@@ -89,7 +89,7 @@ app.get("/users", (request, response) => {
 app.post("/users", (request, response) => {
   try {
     const { name, age } = request.body;
-    if (age < 18) throw new Error("Only allower users over 18 years old");
+    // if (age < 18) throw new Error("Only allower users over 18 years old");
     const user = { id: uuid.v4(), name, age };
 
     users.push(user);
